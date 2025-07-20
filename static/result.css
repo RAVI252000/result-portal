@@ -294,3 +294,14 @@
       padding: 10px;
     }
   }
+@media (max-width: 768px) {
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  #resultsTable {
+    min-width: 500px; /* Adjust as needed for your table */
+    /* width: 100%; Optional: may be omitted for scrolling effect */
+  }
+}
