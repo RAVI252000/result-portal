@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MVGR College - Result Portal</title>
+    <link rel="stylesheet" href="/static/homepage.css">
+  </head>
+  <body>
+    <div class="particles">
+      <div
+        class="particle"
+        style="
+          left: 10%;
+          top: 20%;
+          width: 10px;
+          height: 10px;
+          animation-delay: 0s;
+        "
+      ></div>
+      <div
+        class="particle"
+        style="
+          left: 20%;
+          top: 80%;
+          width: 15px;
+          height: 15px;
+          animation-delay: 2s;
+        "
+      ></div>
+      <div
+        class="particle"
+        style="
+          left: 60%;
+          top: 30%;
+          width: 8px;
+          height: 8px;
+          animation-delay: 4s;
+        "
+      ></div>
+      <div
+        class="particle"
+        style="
+          left: 80%;
+          top: 70%;
+          width: 12px;
+          height: 12px;
+          animation-delay: 1s;
+        "
+      ></div>
+      <div
+        class="particle"
+        style="
+          left: 40%;
+          top: 10%;
+          width: 6px;
+          height: 6px;
+          animation-delay: 3s;
+        "
+      ></div>
+    </div>
+
+    <div class="container">
+      <div class="logo">
+        <img src="image.png" alt="MVGR College Logo" />
+      </div>
+      <h1>MVGR</h1>
+      <h2>College of Engineering</h2>
+
+      <form id="resultForm">
+        <div class="form-group">
+          <label for="rollno">Roll Number</label>
+          <input
+            type="text"
+            id="rollno"
+            name="rollno"
+            placeholder="Enter your roll number"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="sem">Semester</label>
+          <select id="sem" name="sem" required>
+            <option value="">Select Semester</option>
+            <option value="1">1st Semester</option>
+            <option value="2">2nd Semester</option>
+            <option value="3">3rd Semester</option>
+            <option value="4">4th Semester</option>
+            <option value="5">5th Semester</option>
+            <option value="6">6th Semester</option>
+            <option value="7">7th Semester</option>
+            <option value="8">8th Semester</option>
+          </select>
+        </div>
+
+         <button type="submit" class="submit-btn">View Results</button>
+
+          <!-- View Results -->
+        </button>
+      </form>
+
+      <!-- <div class="footer">
+            <p>&copy; 2025 MVGR College of Engineering. All rights reserved.</p>
+        </div> -->
+    </div>
+
+    <script>
+      document.getElementById('myForm').addEventListener('submit', function(e) {
+    // Let the form validate first
+    if (this.checkValidity()) {
+      e.preventDefault(); // Stop the default submit
+      window.location.href = 'results.html'; // Navigate to results page
+    }
+    // Else, browser shows validation errors automatically
+  });
+      document
+        .getElementById("resultForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const rollno = document.getElementById("rollno").value;
+          const sem = document.getElementById("sem").value;
+
+          if (rollno && sem) {
+            // Add loading animation
+            const submitBtn = document.querySelector(".submit-btn");
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = "Loading...";
+            submitBtn.style.opacity = "0.7";
+
+            // Simulate API call
+            setTimeout(() => {
+              alert(
+                `Fetching results for Roll Number: ${rollno}, Semester: ${sem}`
+              );
+              submitBtn.textContent = originalText;
+              submitBtn.style.opacity = "1";
+            }, 1500);
+          }
+        });
+
+      // Add some interactive hover effects
+      document.querySelectorAll("input, select").forEach((element) => {
+        element.addEventListener("focus", function () {
+          this.parentElement.style.transform = "scale(1.02)";
+        });
+
+        element.addEventListener("blur", function () {
+          this.parentElement.style.transform = "scale(1)";
+        });
+      });
+    </script>
+  </body>
+</html>
