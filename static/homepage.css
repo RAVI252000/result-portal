@@ -31,6 +31,24 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.admin-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.8);
+
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  z-index: 1000;
+}
+
 .logo {
   width: 100px;
   height: 100px;

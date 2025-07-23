@@ -126,43 +126,49 @@ sampleData = {
 
 @app.route('/')
 def home():
-  return render_template('homepage.html')
+    return render_template('homepage.html')
+
+
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
 
 
 @app.route('/display', methods=['GET', 'POST'])
 def display():
-  if request.method == 'POST':
-    rollno = request.form['rollno']
-    sem = int(request.form['sem'])
+    if request.method == 'POST':
+        rollno = request.form['rollno']
+        sem = int(request.form['sem'])
 
-    student = sampleData.get(rollno)
-    semester_results = []
-    student_name = None
-    if student:
-      student_name = student['name']
-      semester_results = student['semesters'].get(sem, [])
+        student = sampleData.get(rollno)
+        semester_results = []
+        student_name = None
+        if student:
+            student_name = student['name']
+            semester_results = student['semesters'].get(sem, [])
 
-    # ====== GPA and summary calculation STARTS here ======
-    grade_points = {'A': 10, 'B': 8, 'C': 6, 'D': 4, 'F': 0}
-    total_credits = sum(sub['credits'] for sub in semester_results)
-    total_points = sum(sub['credits'] * grade_points.get(sub['grade'], 0)
-                       for sub in semester_results)
-    gpa = round(total_points / total_credits, 2) if total_credits > 0 else 0.0
-    total_subjects = len(semester_results)
-    # ====== GPA and summary calculation ENDS here ========
+        # ====== GPA and summary calculation STARTS here ======
+        grade_points = {'A': 10, 'B': 8, 'C': 6, 'D': 4, 'F': 0}
+        total_credits = sum(sub['credits'] for sub in semester_results)
+        total_points = sum(sub['credits'] * grade_points.get(sub['grade'], 0)
+                           for sub in semester_results)
+        gpa = round(total_points /
+                    total_credits, 2) if total_credits > 0 else 0.0
+        total_subjects = len(semester_results)
+        # ====== GPA and summary calculation ENDS here ========
 
-    return render_template(
-        'results.html',
-        rollno=rollno,
-        sem=sem,
-        student_name=student_name,
-        results=semester_results,
-        total_credits=total_credits,
-        gpa=gpa,
-        total_subjects=total_subjects,
-    )
-  return render_template('results.html')
+        return render_template(
+            'results.html',
+            rollno=rollno,
+            sem=sem,
+            student_name=student_name,
+            results=semester_results,
+            total_credits=total_credits,
+            gpa=gpa,
+            total_subjects=total_subjects,
+        )
+    return render_template('results.html')
 
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', debug=True)
