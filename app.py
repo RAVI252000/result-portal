@@ -129,7 +129,7 @@ def home():
     return render_template('homepage.html')
 
 
-@app.route('/admin')
+@app.route('/admin/login')
 def admin():
     return render_template('admin.html')
 
