@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 
 app = Flask(__name__)
+app.secret_key = 'admin123'
 
 sampleData = {
     "21A91A0501": {
@@ -129,9 +130,30 @@ def home():
     return render_template('homepage.html')
 
 
-@app.route('/admin/login')
-def admin():
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        # Simple hardcoded authentication - replace with real one
+        if (username == 'admin'
+                or username == 'admin@example.com') and password == 'admin123':
+            session['admin_logged_in'] = True
+            return redirect(url_for('admin_panel'))
+        else:
+            flash('Invalid username or password', 'error')
+            return redirect(url_for('admin_login'))
+
     return render_template('admin.html')
+
+
+@app.route('/admin')
+def admin_panel():
+    if not session.get('admin_logged_in'):
+        flash('Please log in to access the admin panel', 'error')
+        return redirect(url_for('admin_login'))
+    return render_template('adminpanel.html')
 
 
 @app.route('/display', methods=['GET', 'POST'])

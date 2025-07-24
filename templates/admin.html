@@ -243,7 +243,7 @@
         <div id="errorMessage" class="error-message"></div>
         <div id="successMessage" class="success-message"></div>
 
-        <form id="loginForm">
+        <form id="loginForm" method="POST" action="{{ url_for('admin_login') }}">
             <div class="form-group">
                 <label for="username">Username or Email</label>
                 <input type="text" id="username" name="username" required autocomplete="username">
@@ -261,148 +261,47 @@
                 <span id="btnText">Sign In</span>
             </button>
         </form>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="{{ category }}-message">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
     </div>
 
     <script>
-        // Form elements
-        const form = document.getElementById('loginForm');
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
-        const passwordToggle = document.getElementById('passwordToggle');
-        const loginBtn = document.getElementById('loginBtn');
-        const btnText = document.getElementById('btnText');
-        const errorMessage = document.getElementById('errorMessage');
-        const successMessage = document.getElementById('successMessage');
-        const forgotPasswordLink = document.getElementById('forgotPassword');
+      const passwordInput = document.getElementById('password');
+      const passwordToggle = document.getElementById('passwordToggle');
 
-        // Password visibility toggle - FIXED LOGIC
-        passwordToggle.addEventListener('click', function() {
-            if (passwordInput.type === 'password') {
-                // Currently hidden, so show password
-                passwordInput.type = 'text';
-                passwordToggle.textContent = '👁️'; // Show eye when password is visible
-            } else {
-                // Currently visible, so hide password
-                passwordInput.type = 'password';
-                passwordToggle.textContent = '🙈'; // Show monkey when password is hidden
-            }
-        });
-
-        // Show/hide messages
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-            successMessage.style.display = 'none';
-            setTimeout(() => {
-                errorMessage.style.display = 'none';
-            }, 5000);
+      passwordToggle.addEventListener('click', function() {
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          passwordToggle.textContent = '👁️';
+        } else {
+          passwordInput.type = 'password';
+          passwordToggle.textContent = '🙈';
         }
+      });
 
-        function showSuccess(message) {
-            successMessage.textContent = message;
-            successMessage.style.display = 'block';
-            errorMessage.style.display = 'none';
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-            }, 3000);
-        }
-
-        // Form validation
-        function validateForm() {
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value.trim();
-
-            if (!username) {
-                showError('Please enter your username or email');
-                usernameInput.focus();
-                return false;
-            }
-
-            if (!password) {
-                showError('Please enter your password');
-                passwordInput.focus();
-                return false;
-            }
-
-            if (password.length < 6) {
-                showError('Password must be at least 6 characters long');
-                passwordInput.focus();
-                return false;
-            }
-
-            return true;
-        }
-
-        // Login simulation
-        function simulateLogin() {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    const username = usernameInput.value.trim().toLowerCase();
-                    const password = passwordInput.value.trim();
-
-                    // Demo credentials (in real app, this would be server-side validation)
-                    if ((username === 'admin' || username === 'admin@example.com') && password === 'admin123') {
-                        resolve('Login successful!');
-                    } else {
-                        reject('Invalid username or password');
-                    }
-                }, 1500);
-            });
-        }
-
-        // Form submission
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            if (!validateForm()) {
-                return;
-            }
-
-            // Show loading state
-            loginBtn.classList.add('loading');
-            btnText.textContent = '';
-            loginBtn.disabled = true;
-
-            try {
-                const result = await simulateLogin();
-                showSuccess(result);
-
-                // Simulate redirect to admin dashboard
-                setTimeout(() => {
-                    showSuccess('Redirecting to admin dashboard...');
-                }, 1000);
-
-            } catch (error) {
-                showError(error);
-            } finally {
-                // Reset button state
-                loginBtn.classList.remove('loading');
-                btnText.textContent = 'Sign In';
-                loginBtn.disabled = false;
-            }
+      // Optional: input focus animations
+      const inputs = [document.getElementById('username'), passwordInput];
+      inputs.forEach(input => {
+        input.addEventListener('focus', () => {
+          input.parentElement.style.transform = 'scale(1.02)';
         });
-
-        // Forgot password handler
-        forgotPasswordLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('Password reset functionality would be implemented here.\n\nFor demo purposes:\nUsername: admin or admin@example.com\nPassword: admin123');
+        input.addEventListener('blur', () => {
+          input.parentElement.style.transform = 'scale(1)';
         });
+      });
 
-        // Input animations
-        [usernameInput, passwordInput].forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.style.transform = 'scale(1.02)';
-            });
-
-            input.addEventListener('blur', function() {
-                this.parentElement.style.transform = 'scale(1)';
-            });
-        });
-
-        // Auto-focus on username field
-        window.addEventListener('load', function() {
-            usernameInput.focus();
-        });
+      // Optional: autofocusing username on page load
+      window.addEventListener('load', () => {
+        document.getElementById('username').focus();
+      });
     </script>
+
 </body>
 </html>
