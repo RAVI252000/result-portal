@@ -1,103 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Result Portal - Admin Panel</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/adminpanel.css">
-</head>
-<body>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/adminpanel.css" />
+  </head>
+  <body>
     <div class="container">
-        <div class="header">
-            <h1><i class="fas fa-graduation-cap"></i> Result Portal Admin</h1>
-            <p>Manage student results, generate reports, and maintain academic records</p>
-        </div>
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %}
+      <div class="flashes">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %} {% endwith %}
+      <div class="header">
+        <h1><i class="fas fa-graduation-cap"></i> Result Portal Admin</h1>
+        <p>
+          Manage student results, generate reports, and maintain academic
+          records
+        </p>
+      </div>
 
-        <div class="stats-grid">
-            <div class="stat-card students">
-                <div class="stat-icon" style="color: #ff6b6b;">
-                    <i class="fas fa-users"></i>
-                </div>
-                <div class="stat-number" id="total-students">1,247</div>
-                <div class="stat-label">Total Students</div>
-            </div>
-            <div class="stat-card results">
-                <div class="stat-icon" style="color: #4ecdc4;">
-                    <i class="fas fa-file-alt"></i>
-                </div>
-                <div class="stat-number" id="total-results">3,541</div>
-                <div class="stat-label">Total Results</div>
-            </div>
-            <!-- <div class="stat-card pending">
+      <div class="stats-grid">
+        <div class="stat-card students">
+          <div class="stat-icon" style="color: #ff6b6b">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-number" id="total-students">
+            {{ total_students }}
+          </div>
+
+          <div class="stat-label">Total Students</div>
+        </div>
+        <div class="stat-card results">
+          <div class="stat-icon" style="color: #4ecdc4">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <div class="stat-number" id="total-results">{{ total_results }}</div>
+
+          <div class="stat-label">Total Results</div>
+        </div>
+        <!-- <div class="stat-card pending">
                 <div class="stat-icon" style="color: #45b7d1;">
                     <i class="fas fa-clock"></i>
                 </div>
                 <div class="stat-number" id="pending-results">127</div>
                 <div class="stat-label">Pending Results</div>
             </div> -->
-            <!-- <div class="stat-card published">
+        <!-- <div class="stat-card published">
                 <div class="stat-icon" style="color: #51cf66;">
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <div class="stat-number" id="published-results">3,414</div>
                 <div class="stat-label">Published Results</div>
             </div> -->
-        </div>
+      </div>
 
-        <div class="actions-section">
-            <h2 class="section-title">
-                <i class="fas fa-tools"></i>
-                Administrative Actions
-            </h2>
-            
-            <div class="actions-grid">
-                <div class="action-card">
-                    <div class="action-header">
-                        <div class="action-icon upload-icon">
-                            <i class="fas fa-upload"></i>
-                        </div>
-                        <div>
-                            <div class="action-title">Upload Results</div>
-                            <div class="action-desc">Bulk upload student results via CSV or Excel files</div>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" onclick="openModal('uploadModal')">
-                        <i class="fas fa-cloud-upload-alt"></i> Upload Results
-                    </button>
+      <div class="actions-section">
+        <h2 class="section-title">
+          <i class="fas fa-tools"></i>
+          Administrative Actions
+        </h2>
+
+        <div class="actions-grid">
+          <div class="action-card">
+            <div class="action-header">
+              <div class="action-icon upload-icon">
+                <i class="fas fa-upload"></i>
+              </div>
+              <div>
+                <div class="action-title">Upload Results</div>
+                <div class="action-desc">
+                  Bulk upload student results via CSV or Excel files
                 </div>
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="openModal('uploadModal')">
+              <i class="fas fa-cloud-upload-alt"></i> Upload Results
+            </button>
+          </div>
 
-                <div class="action-card">
-                    <div class="action-header">
-                        <div class="action-icon update-icon">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                        <div>
-                            <div class="action-title">Update Results</div>
-                            <div class="action-desc">Modify existing student results and grades</div>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" onclick="openModal('updateModal')">
-                        <i class="fas fa-pencil-alt"></i> Update Results
-                    </button>
+          <div class="action-card">
+            <div class="action-header">
+              <div class="action-icon update-icon">
+                <i class="fas fa-edit"></i>
+              </div>
+              <div>
+                <div class="action-title">Update Results</div>
+                <div class="action-desc">
+                  Modify existing student results and grades
                 </div>
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="openModal('updateModal')">
+              <i class="fas fa-pencil-alt"></i> Update Results
+            </button>
+          </div>
 
-                <div class="action-card">
-                    <div class="action-header">
-                        <div class="action-icon search-icon">
-                            <i class="fas fa-search"></i>
-                        </div>
-                        <div>
-                            <div class="action-title">Search & View</div>
-                            <div class="action-desc">Search for specific student results and view details</div>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" onclick="openModal('searchModal')">
-                        <i class="fas fa-search"></i> Search Results
-                    </button>
+          <div class="action-card">
+            <div class="action-header">
+              <div class="action-icon search-icon">
+                <i class="fas fa-search"></i>
+              </div>
+              <div>
+                <div class="action-title">Search & View</div>
+                <div class="action-desc">
+                  Search for specific student results and view details
                 </div>
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="openModal('searchModal')">
+              <i class="fas fa-search"></i> Search Results
+            </button>
+          </div>
 
-                <!-- <div class="action-card">
+          <!-- <div class="action-card">
                     <div class="action-header">
                         <div class="action-icon report-icon">
                             <i class="fas fa-chart-line"></i>
@@ -112,7 +136,7 @@
                     </button>
                 </div> -->
 
-                <!-- <div class="action-card">
+          <!-- <div class="action-card">
                     <div class="action-header">
                         <div class="action-icon backup-icon">
                             <i class="fas fa-database"></i>
@@ -127,7 +151,7 @@
                     </button>
                 </div> -->
 
-                <!-- <div class="action-card">
+          <!-- <div class="action-card">
                     <div class="action-header">
                         <div class="action-icon settings-icon">
                             <i class="fas fa-cog"></i>
@@ -141,232 +165,257 @@
                         <i class="fas fa-cogs"></i> Settings
                     </button>
                 </div> -->
-            </div>
         </div>
+      </div>
     </div>
 
     <!-- Upload Modal -->
     <div id="uploadModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-upload"></i> Upload Results</h3>
-                <span class="close" onclick="closeModal('uploadModal')">&times;</span>
-            </div>
-            <form id="uploadForm">
-                <div class="form-group">
-                    <label for="exam-type">Exam Type</label>
-                    <select id="exam-type" name="exam_type" required>
-                        <option value="">Select Exam Type</option>
-                        <option value="Regular">Regular</option>
-                        <option value="Supple">Supple</option>
-                        <!-- <option value="unit-test">Unit Test</option> -->
-                        <!-- <option value="assignment">Assignment</option> -->
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="semester">Semester</label>
-                    <select id="semester" name="semester" required>
-                        <option value="">Select Semester</option>
-                        <option value="1">Semester 1</option>
-                        <option value="2">Semester 2</option>
-                        <option value="3">Semester 3</option>
-                        <option value="4">Semester 4</option>
-                      <option value="5">Semester 5</option>
-                      <option value="6">Semester 6</option>
-                      <option value="7">Semester 7</option>
-                      <option value="8">Semester 8</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="result-file">Results File (CSV/Excel)</label>
-                    <input type="file" id="result-file" name="result_file" accept=".csv,.xlsx,.xls" required>
-                </div>
-                <button type="submit" class="btn btn-success">
-                    <i class="fas fa-upload"></i> Upload Results
-                </button>
-            </form>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fas fa-upload"></i> Upload Results</h3>
+          <span class="close" onclick="closeModal('uploadModal')">&times;</span>
         </div>
+        <form
+          id="uploadForm"
+          method="POST"
+          action="{{ url_for('upload_results') }}"
+          enctype="multipart/form-data"
+        >
+          <label for="exam_type">Exam Type</label>
+          <select name="exam_type" required>
+            <option value="Regular">Regular</option>
+            <option value="Supple">Supple</option>
+          </select>
+
+          <label for="semester">Semester</label>
+          <input type="number" name="semester" min="1" max="8" required />
+
+          <label for="result_file">Upload File</label>
+          <input type="file" name="result_file" accept=".csv,.xlsx" required />
+
+          <button type="submit" class="btn btn-success">
+            <i class="fas fa-upload"></i> Upload Results
+          </button>
+        </form>
+      </div>
     </div>
 
     <!-- Update Modal -->
     <div id="updateModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-edit"></i> Update Results</h3>
-                <span class="close" onclick="closeModal('updateModal')">&times;</span>
-            </div>
-            <form id="updateForm">
-                <div class="form-group">
-                    <label for="student-id">Student ID</label>
-                    <input type="text" id="student-id" name="student_id" placeholder="Enter Student ID" required>
-                </div>
-                <div class="form-group">
-                    <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" placeholder="Enter Subject" required>
-                </div>
-                <div class="form-group">
-                    <label for="marks">Marks</label>
-                    <input type="number" id="marks" name="marks" placeholder="Enter Marks" min="0" max="100" required>
-                </div>
-                <div class="form-group">
-                    <label for="grade">Grade</label>
-                    <select id="grade" name="grade">
-                        <option value="">Auto Calculate</option>
-                        <option value="A+">A+</option>
-                        <option value="A">A</option>
-                        <option value="B+">B+</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                        <option value="F">F</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save"></i> Update Result
-                </button>
-            </form>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fas fa-edit"></i> Update Results</h3>
+          <span class="close" onclick="closeModal('updateModal')">&times;</span>
         </div>
+        <form id="updateForm">
+          <div class="form-group">
+            <label for="student-id">Student ID</label>
+            <input
+              type="text"
+              id="student-id"
+              name="student_id"
+              placeholder="Enter Student ID"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              placeholder="Enter Subject"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="marks">Marks</label>
+            <input
+              type="number"
+              id="marks"
+              name="marks"
+              placeholder="Enter Marks"
+              min="0"
+              max="100"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="grade">Grade</label>
+            <select id="grade" name="grade">
+              <option value="">Auto Calculate</option>
+              <option value="A+">A+</option>
+              <option value="A">A</option>
+              <option value="B+">B+</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+              <option value="F">F</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Update Result
+          </button>
+        </form>
+      </div>
     </div>
 
     <!-- Search Modal -->
     <div id="searchModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-search"></i> Search Results</h3>
-                <span class="close" onclick="closeModal('searchModal')">&times;</span>
-            </div>
-            <form id="searchForm">
-                <div class="form-group">
-                    <label for="search-type">Search By</label>
-                    <select id="search-type" name="search_type" required>
-                        <option value="">Select Search Type</option>
-                        <option value="student_id">Student ID</option>
-                        <option value="student_name">Student Name</option>
-                        <option value="class">Class</option>
-                        <option value="subject">Subject</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="search-query">Search Query</label>
-                    <input type="text" id="search-query" name="search_query" placeholder="Enter search term" required>
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-search"></i> Search Results
-                </button>
-            </form>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fas fa-search"></i> Search Results</h3>
+          <span class="close" onclick="closeModal('searchModal')">&times;</span>
         </div>
+        <form id="searchForm">
+          <div class="form-group">
+            <label for="search-type">Search By</label>
+            <select id="search-type" name="search_type" required>
+              <option value="">Select Search Type</option>
+              <option value="student_id">Student ID</option>
+              <option value="student_name">Student Name</option>
+              <option value="class">Class</option>
+              <option value="subject">Subject</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="search-query">Search Query</label>
+            <input
+              type="text"
+              id="search-query"
+              name="search_query"
+              placeholder="Enter search term"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i> Search Results
+          </button>
+        </form>
+      </div>
     </div>
 
     <div id="toast" class="toast"></div>
 
     <script>
-        // Modal functions
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'block';
-        }
+      // Modal functions
+      function openModal(modalId) {
+        document.getElementById(modalId).style.display = "block";
+      }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
+      function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+      }
 
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-            }
+      // Close modal when clicking outside
+      window.onclick = function (event) {
+        if (event.target.classList.contains("modal")) {
+          event.target.style.display = "none";
         }
+      };
 
-        // Toast notification
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast ${type}`;
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
+      // Toast notification
+      function showToast(message, type = "success") {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        toast.classList.add("show");
 
-        // Form handlers
-        document.getElementById('uploadForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Simulate upload process
-            showToast('Results uploaded successfully!', 'success');
-            closeModal('uploadModal');
-            // Here you would typically send the form data to your Flask backend
-            // fetch('/upload_results', { method: 'POST', body: new FormData(this) })
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3000);
+      }
+
+      // Form handlers
+      //   document
+      //     .getElementById("uploadForm")
+      //     .addEventListener("submit", function (e) {
+      //       e.preventDefault();
+      //       // Simulate upload process
+      //       showToast("Results uploaded successfully!", "success");
+      //       closeModal("uploadModal");
+      //       // Here you would typically send the form data to your Flask backend
+      //       // fetch('/upload_results', { method: 'POST', body: new FormData(this) })
+      //     });
+
+      document
+        .getElementById("updateForm")
+        .addEventListener("submit", function (e) {
+          //   e.preventDefault();
+          showToast("Results updated successfully!", "success");
+          closeModal("updateModal");
+          // Here you would send the update to your Flask backend
+          // fetch('/update_results', { method: 'POST', body: new FormData(this) })
         });
 
-        document.getElementById('updateForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            showToast('Results updated successfully!', 'success');
-            closeModal('updateModal');
-            // Here you would send the update to your Flask backend
-            // fetch('/update_results', { method: 'POST', body: new FormData(this) })
+      document
+        .getElementById("searchForm")
+        .addEventListener("submit", function (e) {
+          //   e.preventDefault();
+          showToast("Search completed!", "success");
+          closeModal("searchModal");
+          // Here you would send the search query to your Flask backend
+          // fetch('/search_results', { method: 'POST', body: new FormData(this) })
         });
 
-        document.getElementById('searchForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            showToast('Search completed!', 'success');
-            closeModal('searchModal');
-            // Here you would send the search query to your Flask backend
-            // fetch('/search_results', { method: 'POST', body: new FormData(this) })
-        });
+      // Action functions
+      function generateReport() {
+        showToast("Generating report... Please wait.", "success");
+        // Simulate report generation
+        setTimeout(() => {
+          showToast("Report generated successfully!", "success");
+        }, 2000);
+      }
 
-        // Action functions
-        function generateReport() {
-            showToast('Generating report... Please wait.', 'success');
-            // Simulate report generation
-            setTimeout(() => {
-                showToast('Report generated successfully!', 'success');
-            }, 2000);
-        }
+      function backupData() {
+        showToast("Creating backup... Please wait.", "success");
+        // Simulate backup process
+        setTimeout(() => {
+          showToast("Backup completed successfully!", "success");
+        }, 3000);
+      }
 
-        function backupData() {
-            showToast('Creating backup... Please wait.', 'success');
-            // Simulate backup process
-            setTimeout(() => {
-                showToast('Backup completed successfully!', 'success');
-            }, 3000);
-        }
+      function openSettings() {
+        showToast("Opening system settings...", "success");
+        // Here you would redirect to settings page or open settings modal
+      }
 
-        function openSettings() {
-            showToast('Opening system settings...', 'success');
-            // Here you would redirect to settings page or open settings modal
-        }
+      //   // Simulate real-time stats updates
+      //   function updateStats() {
+      //     const stats = {
+      //       students: Math.floor(1200 + Math.random() * 100),
+      //       results: Math.floor(3500 + Math.random() * 100),
+      //       pending: Math.floor(100 + Math.random() * 50),
+      //       published: Math.floor(3400 + Math.random() * 100),
+      //     };
 
-        // Simulate real-time stats updates
-        function updateStats() {
-            const stats = {
-                students: Math.floor(1200 + Math.random() * 100),
-                results: Math.floor(3500 + Math.random() * 100),
-                pending: Math.floor(100 + Math.random() * 50),
-                published: Math.floor(3400 + Math.random() * 100)
-            };
-            
-            document.getElementById('total-students').textContent = stats.students.toLocaleString();
-            document.getElementById('total-results').textContent = stats.results.toLocaleString();
-            document.getElementById('pending-results').textContent = stats.pending.toLocaleString();
-            document.getElementById('published-results').textContent = stats.published.toLocaleString();
-        }
+      //     document.getElementById("total-students").textContent =
+      //       stats.students.toLocaleString();
+      //     document.getElementById("total-results").textContent =
+      //       stats.results.toLocaleString();
+      //     document.getElementById("pending-results").textContent =
+      //       stats.pending.toLocaleString();
+      //     document.getElementById("published-results").textContent =
+      //       stats.published.toLocaleString();
+      //   }
 
-        // Update stats every 30 seconds
-        setInterval(updateStats, 30000);
+      //   // Update stats every 30 seconds
+      //   setInterval(updateStats, 30000);
 
-        // Grade calculation
-        document.getElementById('marks').addEventListener('input', function() {
-            const marks = parseInt(this.value);
-            const gradeSelect = document.getElementById('grade');
-            
-            if (marks >= 90) gradeSelect.value = 'A+';
-            else if (marks >= 80) gradeSelect.value = 'A';
-            else if (marks >= 70) gradeSelect.value = 'B+';
-            else if (marks >= 60) gradeSelect.value = 'B';
-            else if (marks >= 50) gradeSelect.value = 'C';
-            else if (marks >= 40) gradeSelect.value = 'D';
-            else gradeSelect.value = 'F';
-        });
+      // Grade calculation
+      document.getElementById("marks").addEventListener("input", function () {
+        const marks = parseInt(this.value);
+        const gradeSelect = document.getElementById("grade");
+
+        if (marks >= 90) gradeSelect.value = "A+";
+        else if (marks >= 80) gradeSelect.value = "A";
+        else if (marks >= 70) gradeSelect.value = "B+";
+        else if (marks >= 60) gradeSelect.value = "B";
+        else if (marks >= 50) gradeSelect.value = "C";
+        else if (marks >= 40) gradeSelect.value = "D";
+        else gradeSelect.value = "F";
+      });
     </script>
-</body>
+  </body>
 </html>
